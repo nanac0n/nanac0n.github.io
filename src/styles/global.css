@@ -365,6 +365,22 @@ h1 + .prose {
   font-size: 0.875rem;
 }
 
+/* A caption written as <p class="caption"> right after an image. */
+.prose .caption {
+  margin-top: 0.5rem;
+  color: var(--muted);
+  font-size: 0.875rem;
+  text-align: center;
+}
+
+.prose p:has(> img:only-child) {
+  margin-top: 1.75rem;
+}
+
+.prose p:has(> img:only-child) + :not(.caption) {
+  margin-top: 1.75rem;
+}
+
 .prose code {
   font-family: var(--font);
   font-size: 0.875em;
