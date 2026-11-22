@@ -1,0 +1,27 @@
+---
+import { isoDate, isPrivate, type Post } from '../lib/content';
+
+interface Props {
+  posts: Post[];
+}
+
+const { posts } = Astro.props;
+---
+
+{posts.length === 0 && <p class="empty">No posts yet.</p>}
+<ul class="post-list">
+  {
+    posts.map((post) => (
+      <li>
+        <time datetime={post.data.pubDate.toISOString()}>{isoDate(post.data.pubDate)}</time>
+        <span>
+          <a href={`/posts/${post.id}/`} lang="ko">
+            {post.data.title}
+          </a>
+          {isPrivate(post) && <span class="flag">private</span>}
+          {post.data.draft && <span class="flag">draft</span>}
+        </span>
+      </li>
+    ))
+  }
+</ul>

@@ -1,0 +1,36 @@
+---
+import { render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import { getPosts, isoDate, isPrivate, tagSlug } from '../../lib/content';
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  return posts.map((post) => ({ params: { id: post.id }, props: { post } }));
+}
+
+const { post } = Astro.props;
+const { title, description, pubDate, updatedDate, tags, draft } = post.data;
+const { Content } = await render(post);
+---
+
+<Base title={title} description={description} article={{ publishedTime: pubDate, modifiedTime: updatedDate }}>
+  <article>
+    <h1 lang="ko">{title}</h1>
+    <p class="post-meta">
+      <time datetime={pubDate.toISOString()}>{isoDate(pubDate)}</time>
+      {
+        updatedDate && (
+          <span>
+            updated <time datetime={updatedDate.toISOString()}>{isoDate(updatedDate)}</time>
+          </span>
+        )
+      }
+      {isPrivate(post) && <span class="flag">private</span>}
+      {draft && <span class="flag">draft</span>}
+      {tags.map((tag) => <a href={`/tags/${tagSlug(tag)}/`} lang="ko">{tag}</a>)}
+    </p>
+    <div class="prose" lang="ko">
+      <Content />
+    </div>
+  </article>
+</Base>
