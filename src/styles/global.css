@@ -272,7 +272,7 @@ article > h1 {
 /*
  * Prose: rendered markdown. Running text is set in the proportional Plex
  * Sans KR, because monospace word spacing makes Korean sentences look gappy.
- * Code, heading markers and list numbers stay monospace.
+ * Code and list numbers stay monospace.
  */
 
 .prose {
@@ -302,28 +302,6 @@ h1 + .prose {
 .prose h4 {
   margin-top: 2.25rem;
   font-size: 1rem;
-}
-
-.prose h2::before,
-.prose h3::before,
-.prose h4::before {
-  margin-right: 0.5em;
-  color: var(--muted);
-  font-family: var(--font);
-  font-size: 0.9375rem;
-  font-weight: 400;
-}
-
-.prose h2::before {
-  content: '##';
-}
-
-.prose h3::before {
-  content: '###';
-}
-
-.prose h4::before {
-  content: '####';
 }
 
 .prose h2 + *,
