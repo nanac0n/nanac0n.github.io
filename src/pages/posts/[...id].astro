@@ -1,6 +1,7 @@
 ---
 import { render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
+import { GISCUS, GOATCOUNTER_CODE } from '../../consts';
 import { getPosts, isoDate, isPrivate, tagSlug } from '../../lib/content';
 
 export async function getStaticPaths() {
@@ -11,6 +12,7 @@ export async function getStaticPaths() {
 const { post } = Astro.props;
 const { title, description, pubDate, updatedDate, tags, draft } = post.data;
 const { Content } = await render(post);
+const isPublic = !isPrivate(post) && !draft;
 ---
 
 <Base title={title} description={description} article={{ publishedTime: pubDate, modifiedTime: updatedDate }}>
@@ -28,9 +30,53 @@ const { Content } = await render(post);
       {isPrivate(post) && <span class="flag">private</span>}
       {draft && <span class="flag">draft</span>}
       {tags.map((tag) => <a href={`/tags/${tagSlug(tag)}/`} lang="ko">{tag}</a>)}
+      {isPublic && GOATCOUNTER_CODE && <span class="views" data-code={GOATCOUNTER_CODE} hidden />}
     </p>
     <div class="prose" lang="ko">
       <Content />
     </div>
   </article>
+
+  {
+    isPublic && (
+      <section class="comments" aria-labelledby="comments-heading">
+        <h2 id="comments-heading">comments</h2>
+        <script
+          is:inline
+          src="https://giscus.app/client.js"
+          data-repo={GISCUS.repo}
+          data-repo-id={GISCUS.repoId}
+          data-category={GISCUS.category}
+          data-category-id={GISCUS.categoryId}
+          data-mapping="pathname"
+          data-strict="1"
+          data-reactions-enabled="1"
+          data-emit-metadata="0"
+          data-input-position="top"
+          data-theme="preferred_color_scheme"
+          data-lang="en"
+          data-loading="lazy"
+          crossorigin="anonymous"
+          async
+        />
+      </section>
+    )
+  }
+
+  <script is:inline>
+    // Show the view count next to the date. The element stays hidden if GoatCounter has no data yet.
+    (() => {
+      const el = document.querySelector('.views');
+      if (!el) return;
+      const url = `https://${el.dataset.code}.goatcounter.com/counter/${encodeURIComponent(location.pathname)}.json`;
+      fetch(url)
+        .then((response) => (response.ok ? response.json() : null))
+        .then((data) => {
+          if (!data?.count) return;
+          el.textContent = `${data.count} views`;
+          el.hidden = false;
+        })
+        .catch(() => {});
+    })();
+  </script>
 </Base>

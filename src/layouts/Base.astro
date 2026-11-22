@@ -4,7 +4,7 @@ import '@fontsource/ibm-plex-mono/600.css';
 import '@fontsource/ibm-plex-sans-kr/400.css';
 import '@fontsource/ibm-plex-sans-kr/600.css';
 import '../styles/global.css';
-import { SITE_TITLE, SITE_DESCRIPTION, GITHUB_URL } from '../consts';
+import { SITE_TITLE, SITE_DESCRIPTION, GITHUB_URL, GOATCOUNTER_CODE } from '../consts';
 
 interface Props {
   title?: string;
@@ -47,6 +47,17 @@ const nav = [
     {
       article?.modifiedTime && (
         <meta property="article:modified_time" content={article.modifiedTime.toISOString()} />
+      )
+    }
+    {
+      // Count visits on the deployed site only, never in the local preview.
+      import.meta.env.PROD && GOATCOUNTER_CODE && (
+        <script
+          is:inline
+          async
+          data-goatcounter={`https://${GOATCOUNTER_CODE}.goatcounter.com/count`}
+          src="https://gc.zgo.at/count.js"
+        />
       )
     }
   </head>

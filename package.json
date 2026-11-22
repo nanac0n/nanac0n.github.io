@@ -10,7 +10,9 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "check": "astro check"
+    "check": "astro check",
+    "sync": "node scripts/obsidian-sync.mjs",
+    "new": "node scripts/obsidian-sync.mjs new"
   },
   "dependencies": {
     "@astrojs/rss": "^4.0.19",

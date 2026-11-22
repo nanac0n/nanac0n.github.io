@@ -257,6 +257,18 @@ article > h1 {
   margin-left: 0;
 }
 
+/* Comments (giscus) */
+
+.comments {
+  margin-top: 4.5rem;
+  padding-top: 2rem;
+  border-top: 1px dashed var(--rule);
+}
+
+.comments h2 {
+  margin-bottom: 1.25rem;
+}
+
 /*
  * Prose: rendered markdown. Running text is set in the proportional Plex
  * Sans KR, because monospace word spacing makes Korean sentences look gappy.
@@ -322,6 +334,12 @@ h1 + .prose {
 
 .prose strong {
   font-weight: 600;
+}
+
+.prose mark {
+  padding: 0 0.15em;
+  background: var(--mark);
+  color: var(--on-mark);
 }
 
 .prose ul,
